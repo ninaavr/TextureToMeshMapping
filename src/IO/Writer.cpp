@@ -45,8 +45,7 @@ void Writer::write_obj(const std::string& fileName, TexturedPolyhedron& tp) {
 
 	for (fi = tp.facets_begin(); fi != tp.facets_end(); ++fi) {
 		fs << "f ";
-		TexturedPolyhedron::Halfedge_around_facet_circulator h =
-				fi->facet_begin();
+		TexturedPolyhedron::Halfedge_around_facet_circulator h = fi->facet_begin();
 		do {
 			switch(type){
 			case(1):
@@ -60,27 +59,11 @@ void Writer::write_obj(const std::string& fileName, TexturedPolyhedron& tp) {
 				fs << h->vertex()->id() + 1 << '/' << h->vertex()->id() + 1 << ' ';
 			break;
 			case(4):
-				fs << h->vertex()->id() + 1 ;
+				fs << h->vertex()->id() + 1 << ' ';
 			break;
 			}
 		} while (++h != fi->facet_begin());
 		fs << '\n';
 	}
 	 fs.close();
-/*TexturedPolyhedron::Halfedge_around_facet_circulator fc;
-		 if (tp.normalsExist && tp.texturesExist) {
-		 for (fc = fi; fc != fi; ++fc) {
-		 fs << fc->vertex()->id() + 1 << '/' << fc->vertex()->id() + 1 << '/'
-		 << fc->vertex()->id() + 1 << ' ';
-		 }
-		 } else if (tp.normalsExist) {
-		 fs << fc->vertex()->id() + 1 << "//" << fc->vertex()->id() + 1 << ' ';
-		 } else if (tp.texturesExist)
-		 fs << fc->vertex()->id() + 1 << "/" << fc->vertex()->id() + 1 << ' ';
-		 else {
-		 fs << fc->vertex()->id() + 1 << ' ';
-		 }
-		 fs << '\n';
-		 }
-		 fs.close();*/
 	}

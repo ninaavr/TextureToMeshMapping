@@ -9,11 +9,10 @@
 #define WRITER_H_
 
 #include <fstream>
-#include <boost/foreach.hpp>
 #include <vector>
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Polyhedron_3.h>
-#include "../Textured_polyhedron.h"
+#include "../TexturedPolyhedron/Textured_polyhedron.h"
 
 class Writer {
 private:
@@ -23,6 +22,11 @@ private:
 public:
 	Writer();
 	virtual ~Writer();
+	/**
+	 * writes the mesh in .obj file, if texture or normals exists, they are also written
+	 * @param fileName the name of the file where we store the output
+	 * @param tp the mesh we write in the .obj file
+	 */
 	void write_obj(const std::string& fileName, TexturedPolyhedron& tp);
 };
 
