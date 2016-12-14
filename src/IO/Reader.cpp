@@ -16,7 +16,7 @@ Reader::~Reader() {
 	// TODO Auto-generated destructor stub
 }
 
-void Reader::load_obj(const char *filename, std::vector<double> &coords,
+void Reader::operator()(const char *filename, std::vector<double> &coords,
 		std::vector<int> &tris) {
 	//file has different format if textures or normals are given
 	bool textures, normals = false;

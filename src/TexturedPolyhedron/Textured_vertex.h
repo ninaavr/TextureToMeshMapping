@@ -3,7 +3,7 @@
  * Textured_vertex.h
  *
  *  Created on: 1 Dec 2016
- *      Author: osboxes
+ *      Author: ninaavr
  */
 
 #ifndef TEXTURED_VERTEX_H_
@@ -19,17 +19,19 @@ class Textured_vertex: public CGAL::HalfedgeDS_vertex_base<Refs, T, P> {
 	double m_v;
 	int m_id;
 	bool m_pinned;
-	bool m_border;
+	//bool m_border;
 public:
 	// life cycle
 	Textured_vertex() {
 		m_pinned = false;
-		m_border = false;
+		//m_border = false;
 	}
 
 	// repeat mandatory constructors
 	Textured_vertex(const P& pt) :
 			CGAL::HalfedgeDS_vertex_base<Refs, T, P>(pt) {
+		m_pinned = false;
+		//m_border = false;
 	}
 
 	//normal
@@ -69,15 +71,6 @@ public:
 	}
 	void set_pinned(bool b) {
 		m_pinned = b;
-	}
-	/**returns true if vertex lies on border*/
-	const bool& is_border() {
-		return m_border;
-	}
-	/**sets tag for border vertex
-	 * @param b bool value to set the tag*/
-	void set_border(bool b) {
-		m_border = b;
 	}
 };
 

@@ -2,7 +2,7 @@
  * Textured_items.h
  *
  *  Created on: 1 Dec 2016
- *      Author: osboxes
+ *      Author: ninaavr
  */
 
 #ifndef TEXTURED_ITEMS_H_

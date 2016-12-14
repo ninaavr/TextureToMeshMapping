@@ -43,16 +43,17 @@ public:
 	bool normalsExist;
 
 	int sizePinnedVertices;
-	int sizeBorderVertices;
-	std::list<Halfedge_iterator> border;
+	int sizeSeamHalfedges;
+	std::list<Halfedge_handle>* seam;
 public:
 	// initialises with default values
 	Textured_polyhedron() {
 		texturesExist = false;
 		normalsExist = false;
 		sizePinnedVertices = 0;
-		sizeBorderVertices = 0;
-		Vertex_iterator vi;
+		sizeSeamHalfedges = 0;
+		//Vertex_iterator vi;
+		seam = NULL;
 	}
 
 	virtual ~Textured_polyhedron() {
@@ -63,12 +64,19 @@ public:
 		std::for_each(this->facets_begin(), this->facets_end(), Facet_normal());
 	}
 
-	/**sets vertex IDs only after they are added*/
-	void set_vertex_ids() {
+	/**sets vertex and face IDs after they are added
+	 * used for debugging purposes*/
+	void set_ids() {
 		Vertex_iterator vi;
 		int index = 0;
 		for (vi = this->vertices_begin(); vi != this->vertices_end(); ++vi) {
 			vi->id() = index;
+			++index;
+		}
+		index = 0;
+		Facet_iterator fi;
+		for (fi = this->facets_begin(); fi != this->facets_end(); ++fi){
+			fi->id() = index;
 			++index;
 		}
 	}
@@ -97,32 +105,45 @@ public:
 		return sizePinnedVertices;
 	}
 
-	/**sets tag of vertices that lie on the border given by a list of halfedges
-	 * and stores the list in the property border
-	 * @param l list of halfedges that describe the border*/
-	void set_border(std::list<Halfedge_iterator>& l) {
-		border = l;
-		typename std::list<Halfedge_iterator>::iterator it;
+	/**sets tag of halfedges that lie on the seam given by a list
+	 * and stores the list in the property seam
+	 * @param l list of halfedges that describe the seam*/
+	void set_seam(std::list<Halfedge_handle>& l) {
+		seam = &l;
+		Halfedge_handle prev = *l.begin();
+		typename std::list<Halfedge_handle>::iterator it;
 		for (it = l.begin(); it != l.end(); ++it) {
-			(*it)->vertex()->set_border(true);
-			++sizeBorderVertices;
+			//remove duplicated edges
+			if(prev == (*it)->opposite()){
+				cout << "edge must be given by 1 halfedge!!" << endl;
+				std::exit(-1);
+			}
+			//seam has to be a path
+			if(prev->vertex() != (*it)->opposite()->vertex() && it!=l.begin()){
+				cout << "invalid seam!!" << endl;
+				std::exit(-1);
+			}
+			(*it)->set_seam(true);
+			(*it)->opposite()->set_seam(true);
+			prev = *it;
+			++sizeSeamHalfedges;
 		}
 	}
 
-	/**clears the border list border from the textured polyhedron and
-	 * resets the tags for border of all vertices*/
-	void reset_border() {
-		Halfedge_iterator it;
-		for (it = this->border->begin(); it != this->border->end(); ++it)
-			it->vertex()->set_border(false);
-		this->border->clear();
-		sizeBorderVertices = 0;
+	/**clears the seam list seam from the textured polyhedron and
+	 * resets the tags for seam of all halfedges*/
+	void reset_seam() {
+		typename std::list<Halfedge_handle>::iterator it;
+		for (it = this->seam->begin(); it != this->seam->end(); ++it)
+			(*it)->vertex()->set_seam(false);
+		this->seam->clear();
+		sizeSeamHalfedges = 0;
 	}
 
-	/**returns the number of border vertices
-	 * @return number of border vertices*/
-	int size_of_border_vertices() {
-		return sizeBorderVertices;
+	/**returns the number of seam halfedges
+	 * @return number of seam halfedges*/
+	int size_of_seam_halfedges() {
+		return sizeSeamHalfedges;
 	}
 
 };

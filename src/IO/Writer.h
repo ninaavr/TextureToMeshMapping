@@ -2,7 +2,7 @@
  * Writer.h
  *
  *  Created on: 15 Nov 2016
- *      Author: osboxes
+ *      Author: ninaavr
  */
 
 #ifndef WRITER_H_
@@ -27,7 +27,7 @@ public:
 	 * @param fileName the name of the file where we store the output
 	 * @param tp the mesh we write in the .obj file
 	 */
-	void write_obj(const std::string& fileName, TexturedPolyhedron& tp);
+	void operator()(const std::string& fileName, TexturedPolyhedron& tp);
 };
 
 #endif /* WRITER_H_ */

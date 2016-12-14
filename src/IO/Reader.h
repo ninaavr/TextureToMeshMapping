@@ -27,7 +27,7 @@ public:
 	 * @param coords stores coordinates of vertices, packed [x0,y0,z0,x1,y1,z1,...]
 	 * @param tris stores facets, given by corresponding vertices, packed [F0a,F0b,F0c,F1a,F1b,F1c,...]
 	 */
-	void load_obj(const char *filename, std::vector<double> &coords,
+	void operator()(const char *filename, std::vector<double> &coords,
 			std::vector<int> &tris);
 private:
 	/**

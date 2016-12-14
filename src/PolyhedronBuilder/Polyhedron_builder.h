@@ -2,7 +2,7 @@
  * Polyhedron_builder.h
  *
  *  Created on: 1 Dec 2016
- *      Author: osboxes
+ *      Author: ninaavr
  */
 #ifndef POLYHEDRON_BUILDER_H_
 #define POLYHEDRON_BUILDER_H_

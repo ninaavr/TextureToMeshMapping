@@ -36,8 +36,7 @@ public:
 		B.begin_surface(coords.size() / 3, tris.size() / 3);
 		//add polyhedron vertices
 		for (int i = 0; i < (int) coords.size(); i += 3) {
-			B.add_vertex(
-					(K::Point_3(coords[i + 0], coords[i + 1], coords[i + 2])));
+			B.add_vertex((K::Point_3(coords[i + 0], coords[i + 1], coords[i + 2])));
 		}
 		// add the polyhedron triangles
 		for (int i = 0; i < (int) tris.size(); i += 3) {

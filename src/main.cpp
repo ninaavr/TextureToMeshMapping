@@ -3,12 +3,17 @@
 #include <CGAL/parameterize.h>
 #include <CGAL/LSCM_parameterizer_3.h>
 
+
+
 #include "TexturedPolyhedron/Textured_polyhedron.h"
 #include "PolyhedronBuilder/Textured_polyhedron_builder.h"
 #include "PolyhedronBuilder/Polyhedron_builder.h"
 #include "IO/Reader.h"
 #include "IO/Writer.h"
-#include "MatrixLoader.h"
+#include "Free_matrix_loader.h"
+#include "CPPUnitTests/SeamPinnedTestSuite.h"
+#include "CPPUnitTests/CalculationsTestSuite.h"
+#include "CPPUnitTests/Runner.h"
 
 using namespace std;
 typedef CGAL::Simple_cartesian<double> K;
@@ -21,28 +26,44 @@ int main() {
 	std::vector<double> coords;
 	std::vector<int> tris;
 
-	//loads data from obj file to vectors
+	//loads data from .obj file to vectors
 	Reader r;
-	r.load_obj ("centaur2.obj", coords, tris);
+	r("cube.obj", coords, tris);
 
 	//builds textured polyhedron builder and from it also textured polyhedron
 	Textured_builder tb(coords, tris);
 	TexturedPolyhedron tp;
 	tp.delegate(tb);
 	//sets vertices IDs
-	tp.set_vertex_ids();
+	tp.set_ids();
 
-	//std::list<TexturedPolyhedron::Halfedge_iterator> bord;
-	//TexturedPolyhedron::Halfedge_iterator hi = tp.halfedges_begin();
-	//bord.push_back(hi);
-	//tp.set_border(bord);
-	//MatrixLoader ml;
-	//Eigen::SparseMatrix<double> M;
-	//ml.load_M(tp, M);
+	//run(TestSeamAndPinn::suite());
+	run(CalculationsTest::suite());
 
+	std::list<TexturedPolyhedron::Halfedge_iterator> bord;
+	TexturedPolyhedron::Halfedge_iterator hi = tp.halfedges_begin();
+	bord.push_back(hi);
+
+	std::list<TexturedPolyhedron::Vertex_handle> pv;
+
+	hi = hi->next_on_vertex()->opposite();
+	pv.push_back(hi->vertex());
+	bord.push_back(hi);
+	hi = hi->next_on_vertex()->opposite();
+
+	bord.push_back(hi);
+	hi = hi->next_on_vertex()->opposite();
+	bord.push_back(hi);
+
+	tp.set_seam(bord);
+	tp.compute_normals_per_facet();
+
+	Free_matrix_loader ml;
+	Eigen::SparseMatrix<double> Mf;
+	ml.load_M(tp,pv, Mf);
+	//writes textured polyhedron in  an .obj file
 	Writer w;
-	w.write_obj("test.obj", tp);
-
+	w("test.obj", tp);
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 };

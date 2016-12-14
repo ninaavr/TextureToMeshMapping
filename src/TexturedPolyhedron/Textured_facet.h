@@ -1,3 +1,9 @@
+/*
+ * Textured_facet.h
+ *
+ *  Created on: 1 Dec 2016
+ *      Author: ninaavr
+ */
 #ifndef _TEXTURED_FACET_H
 #define _TEXTURED_FACET_H
 
@@ -7,7 +13,8 @@ template<class Refs, class T, class P, class Norm>
 class Textured_facet: public CGAL::HalfedgeDS_face_base<Refs, T> {
 	// normal
 	Norm m_normal;
-
+	//id for debugging purposes
+	int m_id;
 public:
 
 	// life cycle
@@ -25,6 +32,10 @@ public:
 	/**gets normal*/
 	const Normal_3& normal() const {
 		return m_normal;
+	}
+	/**gets or sets ID of the facet*/
+	int& id() {
+		return m_id;
 	}
 };
 
@@ -51,4 +62,14 @@ struct Facet_normal // (functor)
 			f.normal() = CGAL::NULL_VECTOR;
 	}
 };
+
+/*struct Plane_equation {
+	template <class Facet>
+	typename Facet::Plane_3 operator()(Facet& f) {
+		typename Facet::Halfedge_handle h = f.halfedge();
+		typedef typename Facet::Plane_3 Plane;
+		return Plane(h->vertex()->point(), h->next()->vertex()->point(),
+				h->next()->next()->vertex()->point());
+	}
+};*/
 #endif

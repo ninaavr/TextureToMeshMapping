@@ -2,7 +2,7 @@
  * Writer.cpp
  *
  *  Created on: 15 Nov 2016
- *      Author: osboxes
+ *      Author: ninaavr
  */
 
 #include "Writer.h"
@@ -16,7 +16,7 @@ Writer::~Writer() {
 	// TODO Auto-generated destructor stub
 }
 
-void Writer::write_obj(const std::string& fileName, TexturedPolyhedron& tp) {
+void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
 	std::fstream fs;
 	int type = 4;
 	fs.open((fileName).c_str(), std::fstream::out);
@@ -66,4 +66,4 @@ void Writer::write_obj(const std::string& fileName, TexturedPolyhedron& tp) {
 		fs << '\n';
 	}
 	 fs.close();
-	}
+}
