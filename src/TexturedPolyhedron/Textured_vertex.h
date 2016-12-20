@@ -18,20 +18,13 @@ class Textured_vertex: public CGAL::HalfedgeDS_vertex_base<Refs, T, P> {
 	double m_u;
 	double m_v;
 	int m_id;
-	bool m_pinned;
-	//bool m_border;
 public:
 	// life cycle
 	Textured_vertex() {
-		m_pinned = false;
-		//m_border = false;
 	}
 
 	// repeat mandatory constructors
-	Textured_vertex(const P& pt) :
-			CGAL::HalfedgeDS_vertex_base<Refs, T, P>(pt) {
-		m_pinned = false;
-		//m_border = false;
+	Textured_vertex(const P& pt) : CGAL::HalfedgeDS_vertex_base<Refs, T, P>(pt) {
 	}
 
 	//normal
@@ -64,13 +57,6 @@ public:
 	/**gets or sets ID of the vertex*/
 	int& id() {
 		return m_id;
-	}
-	//to move in matrix loader
-	const bool& is_pinned() {
-		return m_pinned;
-	}
-	void set_pinned(bool b) {
-		m_pinned = b;
 	}
 };
 

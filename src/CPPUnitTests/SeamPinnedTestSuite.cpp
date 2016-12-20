@@ -9,7 +9,7 @@
 
 void TestSeamAndPinn::setUp(void){
 	tp = new TexturedPolyhedron();
-	ml = new Free_matrix_loader();
+	//ml = new Free_matrix_loader();
 	typedef TexturedPolyhedron::HalfedgeDS HalfedgeDS;
 	typedef CGAL::Polyhedron_3<K> Polyhedron;
 	typedef Textured_Polyhedron_builder<HalfedgeDS, Polyhedron, TexturedPolyhedron, K> Textured_builder;
@@ -34,7 +34,7 @@ void TestSeamAndPinn::testPinnedSize(void){
 	++hi;
 	std::list<TexturedPolyhedron::Vertex_handle> pv, pf;
 	pv.push_back(hi->vertex());
-	ml-> get_free_vertices(*tp, pv, pf);
+	//ml-> get_free_vertices(*tp, pv, pf);
 	CPPUNIT_ASSERT(pf.size()==7);
 }
 

@@ -5,14 +5,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/CPPUnitTests/CalculationsTestSuite.cpp \
+../src/CPPUnitTests/LoadingTestSuite.cpp \
 ../src/CPPUnitTests/SeamPinnedTestSuite.cpp 
 
 OBJS += \
 ./src/CPPUnitTests/CalculationsTestSuite.o \
+./src/CPPUnitTests/LoadingTestSuite.o \
 ./src/CPPUnitTests/SeamPinnedTestSuite.o 
 
 CPP_DEPS += \
 ./src/CPPUnitTests/CalculationsTestSuite.d \
+./src/CPPUnitTests/LoadingTestSuite.d \
 ./src/CPPUnitTests/SeamPinnedTestSuite.d 
 
 

@@ -11,8 +11,10 @@
 #include "IO/Reader.h"
 #include "IO/Writer.h"
 #include "Free_matrix_loader.h"
+#include "Pinned_matrix_loader.h"
 #include "CPPUnitTests/SeamPinnedTestSuite.h"
 #include "CPPUnitTests/CalculationsTestSuite.h"
+#include "CPPUnitTests/LoadingTestSuite.h"
 #include "CPPUnitTests/Runner.h"
 
 using namespace std;
@@ -28,7 +30,7 @@ int main() {
 
 	//loads data from .obj file to vectors
 	Reader r;
-	r("cube.obj", coords, tris);
+	r("human.obj", coords, tris);
 
 	//builds textured polyhedron builder and from it also textured polyhedron
 	Textured_builder tb(coords, tris);
@@ -39,6 +41,7 @@ int main() {
 
 	//run(TestSeamAndPinn::suite());
 	run(CalculationsTest::suite());
+	run(LoadingTest::suite());
 
 	std::list<TexturedPolyhedron::Halfedge_iterator> bord;
 	TexturedPolyhedron::Halfedge_iterator hi = tp.halfedges_begin();
@@ -58,9 +61,15 @@ int main() {
 	tp.set_seam(bord);
 	tp.compute_normals_per_facet();
 
-	Free_matrix_loader ml;
 	Eigen::SparseMatrix<double> Mf;
-	ml.load_M(tp,pv, Mf);
+	Free_matrix_loader fml;
+	fml.load_M(tp,pv, Mf);
+
+	Eigen::SparseMatrix<double> Mp;
+	Eigen::SparseMatrix<double> U;
+	Pinned_matrix_loader pml;
+	pml.load_M(tp, pv, Mp);
+	pml.load_U(pv, U);
 	//writes textured polyhedron in  an .obj file
 	Writer w;
 	w("test.obj", tp);

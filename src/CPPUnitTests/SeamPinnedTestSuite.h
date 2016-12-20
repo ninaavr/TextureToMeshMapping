@@ -8,17 +8,8 @@
 #ifndef SEAMPINNEDTESTSUITE_H_
 #define SEAMPINNEDTESTSUITE_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TextTestRunner.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/TestResult.h>
-#include <cppunit/TestResultCollector.h>
-#include <cppunit/TestRunner.h>
-#include <cppunit/BriefTestProgressListener.h>
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/XmlOutputter.h>
+
 #include "../TexturedPolyhedron/Textured_polyhedron.h"
 #include "../PolyhedronBuilder/Textured_polyhedron_builder.h"
 #include "../Free_matrix_loader.h"

@@ -41,8 +41,7 @@ public:
 	// set to true after they are calculated
 	bool texturesExist;
 	bool normalsExist;
-
-	int sizePinnedVertices;
+	//
 	int sizeSeamHalfedges;
 	std::list<Halfedge_handle>* seam;
 public:
@@ -50,9 +49,7 @@ public:
 	Textured_polyhedron() {
 		texturesExist = false;
 		normalsExist = false;
-		sizePinnedVertices = 0;
 		sizeSeamHalfedges = 0;
-		//Vertex_iterator vi;
 		seam = NULL;
 	}
 
@@ -79,30 +76,6 @@ public:
 			fi->id() = index;
 			++index;
 		}
-	}
-
-	/**sets which vertices are manually set to texture coordinates
-	 * @param list list of the vertices that have pinned texture coordinates*/
-	void set_pinned_vertices(std::list<Vertex_iterator> &list) {
-		typename std::list<Vertex_iterator>::iterator vi;
-		for (vi = list.begin(); vi != list.end(); ++vi) {
-			(*vi)->m_pinned = true;
-			++sizePinnedVertices;
-		}
-	}
-
-	/**sets tag of all vertices to be not pinned*/
-	void reset_pinned_vertices() {
-		Vertex_iterator vi;
-		for (vi = this->vertices_begin(); vi != this->vertices_end(); ++vi)
-			vi->set_pinned(false);
-		sizePinnedVertices = 0;
-	}
-
-	/**returns the number of pinned to texture vertices
-	 * @return number of pinned vertices*/
-	int size_of_pinned_vertices() {
-		return sizePinnedVertices;
 	}
 
 	/**sets tag of halfedges that lie on the seam given by a list
