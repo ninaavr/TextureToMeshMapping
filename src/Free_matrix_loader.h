@@ -20,13 +20,14 @@ public:
 	 *  and contains calculations for vertices with previously fixed texture coordinates
 	 * @param tp textured polyhedron
 	 * @param pinnedVertices std list of the vertices with predefined texture coordinates*/
-	void load_M(TexturedPolyhedron& tp, Vertices& pinnedVertices, Eigen::SparseMatrix<double>& M);
+	void load_M(TexturedPolyhedron& tp, Eigen::SparseMatrix<double>& M);
+	void store_result(Eigen::VectorXd& textures,  TexturedPolyhedron& tp);
 private:
 	/**sets std map seam to true for the vertices which lie on the virtual cut of the polyhedron
 	 * and std map this_type to true for the vertices which texture coordinates are not fixed previously
 	 * @param tp the textured polyhedron
 	 * @param pinned std list of the vertices with predefined texture coordinates*/
-	void set_tags(TexturedPolyhedron& tp, Vertices& pinned);
+	void set_tags(TexturedPolyhedron& tp);
 };
 
 #endif /* FREEMATTRIXLOADER_H_ */

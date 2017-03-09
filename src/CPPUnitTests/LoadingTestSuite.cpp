@@ -4,7 +4,7 @@
  *  Created on: 18 Dec 2016
  *      Author: ninaavr
  */
-
+/*
 #include "LoadingTestSuite.h"
 
 void LoadingTest::setUp(void){
@@ -103,3 +103,4 @@ void LoadingTest::testPinnedLoading(void){
 	CPPUNIT_ASSERT(numPinned1 == numPinned);
 	CPPUNIT_ASSERT(numPinned2 == numPinned);
 }
+*/

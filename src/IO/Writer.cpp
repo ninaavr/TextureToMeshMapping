@@ -20,7 +20,8 @@ void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
 	std::fstream fs;
 	int type = 4;
 	fs.open((fileName).c_str(), std::fstream::out);
-	fs << "mtllib " << fileName << ".mtl" << '\n';
+	std::string::size_type pos = fileName.find('.');
+	fs << "mtllib " << fileName.substr(0, pos)  << ".mtl" << '\n';
 	TexturedPolyhedron::Vertex_iterator vi;
 	for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
 		fs << "v " << vi->point() << '\n';
@@ -30,8 +31,13 @@ void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
 		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
 			fs << "vt " << vi->u() << " " << vi->v() << '\n';
 		}
+		//second value for seam vertices
+		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
+			if (vi->u() != -1)
+				fs << "vt " << vi->u2() << " " << vi->v2() << '\n';
+		}
 		type = 3;
-	}
+		}
 	if (tp.normalsExist) {
 		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
 			fs << "vn " << vi->normal() << '\n';

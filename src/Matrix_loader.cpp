@@ -38,6 +38,7 @@ void Matrix_loader::set_columns(TexturedPolyhedron& tp) {
 			} else {
 				//cout << (vi)->id() << "   at   " << index << endl;
 				column[vi].first = index;
+				column[vi].second = -1;
 				++index;
 			}
 		}
@@ -74,12 +75,15 @@ void Matrix_loader::load_seam(TexturedPolyhedron& tp, Eigen::SparseMatrix<double
 void Matrix_loader::load_seam_face(Vertex_handle v, Facet_handle f, const bool left, Eigen::SparseMatrix<double>& M) {
 	int col;
 	(left) ? col = column[v].first : col = column[v].second;
-	double area = mc.calc_area(f);
+	double area = sqrt(2 * mc.calc_area(f));;
 	double W[2];
 	mc.calc_W(f, v, W);
+	int sizeColumns = count_this_type();
 	//calc u and v
-	M.coeffRef(row[f], col) = W[0]/ (2 * area);
-	M.coeffRef(row[f] + row.size(), col) = W[1] / (2 * area);
+	M.coeffRef(row[f], col) = W[0]/ area;
+	M.coeffRef(row[f] + row.size(), col) = W[1] / area;
+	M.coeffRef(row[f], col + sizeColumns) = -W[1] / area;
+	M.coeffRef(row[f] + row.size(), col + sizeColumns) = W[0] / area;
 }
 
 
@@ -88,7 +92,7 @@ int Matrix_loader::count_this_seam(){
 	int size = 0;
 	for (it = this_type.begin(); it != this_type.end(); ++it){
 		if(it->second && seam[it->first])
-			++size;
+			size+=2;
 	}
 	return size;
 }
@@ -97,7 +101,9 @@ int Matrix_loader::count_this_type(){
 	typename Tag::iterator it;
 	int size = 0;
 	for (it = this_type.begin(); it != this_type.end(); ++it){
-		if(it->second)
+		if (it->second)
+			++size;
+		if(it->second && seam[it->first])
 			++size;
 	}
 	return size;

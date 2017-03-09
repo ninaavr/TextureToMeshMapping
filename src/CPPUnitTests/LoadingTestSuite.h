@@ -5,7 +5,7 @@
  *      Author: ninaavr
  */
 
-#ifndef LOADINGTESTSUITE_H_
+/*#ifndef LOADINGTESTSUITE_H_
 #define LOADINGTESTSUITE_H_
 
 #include <cppunit/extensions/HelperMacros.h>

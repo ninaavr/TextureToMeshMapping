@@ -1,0 +1,4 @@
+newmtl material
+map_Ka texture.png
+map_Kd texture.png
+map_Ks texture.png
