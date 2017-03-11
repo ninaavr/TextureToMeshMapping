@@ -59,12 +59,12 @@ void Matrix_loader::load_seam(TexturedPolyhedron& tp, Eigen::SparseMatrix<double
 		if (this_type[v]){
 			//all facets with v on first side of the border
 			for (; hi != (*next)->opposite(); hi = hi->next_on_vertex()){
-				load_seam_face(v, hi->face(), true, M);
+				load_seam_face(v, hi->face(), 0, M);
 				//hi takes halfedges pointing to v
 			}
 			//all facets with v on second side of the border
 			for (; hi != (*prev); hi = hi->next_on_vertex()){
-				load_seam_face(v, hi->face(), false, M);
+				load_seam_face(v, hi->face(), 1, M);
 			}
 		}
 		++prev;	++next;
@@ -72,10 +72,11 @@ void Matrix_loader::load_seam(TexturedPolyhedron& tp, Eigen::SparseMatrix<double
 }
 
 
-void Matrix_loader::load_seam_face(Vertex_handle v, Facet_handle f, const bool left, Eigen::SparseMatrix<double>& M) {
+void Matrix_loader::load_seam_face(Vertex_handle v, Facet_handle f, const int left, Eigen::SparseMatrix<double>& M) {
 	int col;
-	(left) ? col = column[v].first : col = column[v].second;
-	double area = sqrt(2 * mc.calc_area(f));;
+	(left==0) ? col = column[v].first : col = column[v].second;
+	f->is_side() = left;
+	double area = sqrt(2 * mc.calc_area(f));
 	double W[2];
 	mc.calc_W(f, v, W);
 	int sizeColumns = count_this_type();

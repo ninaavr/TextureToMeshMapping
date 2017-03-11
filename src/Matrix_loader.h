@@ -84,7 +84,7 @@ private:
 	 * @param v the given vertex
 	 * @param f the given facet
 	 * @param left is true if the facet belongs to the left side of the virtual cut, otherwise false*/
-	void load_seam_face(Vertex_handle v, Facet_handle f, const bool left, Eigen::SparseMatrix<double>& M);
+	void load_seam_face(Vertex_handle v, Facet_handle f, const int left, Eigen::SparseMatrix<double>& M);
 };
 
 #endif /* MATRIXLOADER_H_ */

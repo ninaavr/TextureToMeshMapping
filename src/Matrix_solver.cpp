@@ -33,5 +33,5 @@ void Matrix_solver::solve_system(Matrix& Mf,  Matrix& Mp,  Matrix& U, VectorXd& 
 	//cout << "-Mp*U   "<< - Mp*U << endl;
 	std::cout << "#iterations:     " << solver.iterations() << std::endl;
 	std::cout << "estimated error: " << solver.error()      << std::endl;
-	cout << textures << endl;
+	//cout << textures << endl;
 }
