@@ -31,7 +31,7 @@ private:
 	typedef CGAL::Simple_cartesian<double> K;
 	typedef Textured_polyhedron<K, Textured_items> TexturedPolyhedron;
 	TexturedPolyhedron* tp;
-	Free_matrix_loader* ml;
+	Free_matrix_loader* fml;
 
 public:
 

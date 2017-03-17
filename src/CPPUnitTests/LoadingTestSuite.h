@@ -5,7 +5,7 @@
  *      Author: ninaavr
  */
 
-/*#ifndef LOADINGTESTSUITE_H_
+#ifndef LOADINGTESTSUITE_H_
 #define LOADINGTESTSUITE_H_
 
 #include <cppunit/extensions/HelperMacros.h>
@@ -24,6 +24,7 @@ class LoadingTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE(LoadingTest);
 	CPPUNIT_TEST(testFreeLoading);
 	CPPUNIT_TEST(testPinnedLoading);
+	CPPUNIT_TEST(testPinnedLoading_U);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -48,6 +49,7 @@ public:
 protected:
 	void testFreeLoading(void);
 	void testPinnedLoading(void);
+	void testPinnedLoading_U(void);
 };
 
 #endif /* LOADINGTESTSUITE_H_ */

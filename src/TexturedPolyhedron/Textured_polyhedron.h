@@ -41,8 +41,8 @@ public:
 	// set to true after they are calculated
 	bool texturesExist;
 	bool normalsExist;
-	//
 	int sizeSeamHalfedges;
+	int sizeBranch;
 	std::list<Halfedge_handle>* seam;
 public:
 	// initialises with default values
@@ -50,6 +50,7 @@ public:
 		texturesExist = false;
 		normalsExist = false;
 		sizeSeamHalfedges = 0;
+		sizeBranch = 0;
 		seam = NULL;
 	}
 
@@ -91,11 +92,14 @@ public:
 				cout << "edge must be given by 1 halfedge!!" << endl;
 				std::exit(-1);
 			}
-			//seam has to be a path
 			if(prev->vertex() != (*it)->opposite()->vertex() && it!=l.begin()){
+				++sizeBranch;
+			}
+			//seam has to be a path
+			/*if(prev->vertex() != (*it)->opposite()->vertex() && it!=l.begin()){
 				cout << "invalid seam!!" << endl;
 				std::exit(-1);
-			}
+			}*/
 			(*it)->set_seam(true);
 			(*it)->opposite()->set_seam(true);
 			prev = *it;
@@ -117,6 +121,9 @@ public:
 	 * @return number of seam halfedges*/
 	int size_of_seam_halfedges() {
 		return sizeSeamHalfedges;
+	}
+	int size_of_branch_vertices(){
+		return sizeBranch;
 	}
 
 };

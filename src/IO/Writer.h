@@ -20,7 +20,8 @@ private:
 	typedef CGAL::Polyhedron_3<K> Polyhedron;
 	typedef Textured_polyhedron<K, Textured_items> TexturedPolyhedron;
 	typedef TexturedPolyhedron::Vertex_handle Vertex_handle;
-	typedef std::map<Vertex_handle, std::pair<int, int> >  Vertex_ID;
+	typedef std::map<Vertex_handle, int* >  Vertex_ID;
+	typedef TexturedPolyhedron::Halfedge_around_facet_circulator HF_circulator;
 	Vertex_ID id;
 public:
 	Writer();

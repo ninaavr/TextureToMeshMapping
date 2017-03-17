@@ -15,7 +15,9 @@ class Textured_facet: public CGAL::HalfedgeDS_face_base<Refs, T> {
 	Norm m_normal;
 	//id for debugging purposes
 	int m_id;
-	int m_side;
+	int m_seam_side;
+	int m_branch_side;
+	int side[3];
 public:
 
 	// life cycle
@@ -23,7 +25,12 @@ public:
 	// default constructor mandatory
 
 	Textured_facet() {
-		m_side = -1;
+		m_seam_side = -1;
+		m_branch_side = -1;
+		//side = new int[3];
+		side[0] = 0;
+		side[1] = 0;
+		side[2] = 0;
 	}
 
 	typedef Norm Normal_3;
@@ -39,8 +46,14 @@ public:
 	int& id() {
 		return m_id;
 	}
-	int& is_side(){
-		return m_side;
+	int& is_seam_side(){
+		return m_seam_side;
+	}
+	int& is_branch_side(){
+		return m_branch_side;
+	}
+	int* is_side(){
+		return side;
 	}
 };
 

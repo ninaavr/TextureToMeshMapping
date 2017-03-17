@@ -14,6 +14,7 @@ Writer::Writer() {
 
 Writer::~Writer() {
 	// TODO Auto-generated destructor stub
+
 }
 
 void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
@@ -25,24 +26,37 @@ void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
 	TexturedPolyhedron::Vertex_iterator vi;
 	int index = 0;
 	int index2 = tp.size_of_vertices();
+	int index3 = index2 + tp.seam->size()-1;
 	for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
+		id[vi] = new int[3];
+		id[vi][0] = -1;
+		id[vi][1] = -1;
+		id[vi][2] = -1;
 		fs << "v " << vi->point() << '\n';
-		id[vi].first = index;
+		id[vi][0] = index;
 		++index;
-		if (vi->u2() != -1) {
-			id[vi].second = index2;
+		if (vi->u()[1] != -1) {
+			id[vi][1] = index2;
 			++index2;
+		}
+		if (vi->u()[2] != -1) {
+			id[vi][2] = index3;
+			++index3;
 		}
 	}
 
 	if (tp.texturesExist) {
 		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
-			fs << "vt " << vi->u() << " " << vi->v() << '\n';
+			fs << "vt " << vi->u()[0] << " " << vi->v()[0] << '\n';
 		}
 		//second value for seam vertices
 		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
-			if (vi->u2() != -1)
-				fs << "vt " << vi->u2() << " " << vi->v2() << '\n';
+			if (vi->u()[1] != -1)
+				fs << "vt " << vi->u()[1] << " " << vi->v()[1] << '\n';
+		}
+		for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
+			if (vi->u()[2] != -1)
+				fs << "vt " << vi->u()[2] << " " << vi->v()[2] << '\n';
 		}
 		type = 3;
 	}
@@ -56,37 +70,32 @@ void Writer::operator()(const std::string& fileName, TexturedPolyhedron& tp) {
 		type = 1;
 	fs << "usemtl material" << '\n';
 	TexturedPolyhedron::Face_iterator fi;
-
+	int i;
 	for (fi = tp.facets_begin(); fi != tp.facets_end(); ++fi) {
 		fs << "f ";
-		TexturedPolyhedron::Halfedge_around_facet_circulator h =
-				fi->facet_begin();
+		TexturedPolyhedron::Halfedge_around_facet_circulator h = fi->facet_begin();
+		i=0;
 		do {
 			switch (type) {
 			case (1): //textures and normals
-				if (fi->is_side()==0 || h->vertex()->u2() == -1)
-					fs << id[h->vertex()].first + 1 << '/' << id[h->vertex()].first + 1 << '/'
-							<< id[h->vertex()].first + 1 << ' ';
-				else
-					fs << id[h->vertex()].first + 1 << '/' << id[h->vertex()].second + 1 << '/'
-							<< id[h->vertex()].first + 1 << ' ';
+					fs << id[h->vertex()][0] + 1 << '/' << id[h->vertex()][fi->is_side()[i]] + 1 << '/' << id[h->vertex()][0] + 1 << ' ';
 				break;
 			case (2): //normals
-				fs << id[h->vertex()].first + 1 << '/' << '/' << id[h->vertex()].first + 1 << ' ';
+				fs << id[h->vertex()][0] + 1 << '/' << '/' << id[h->vertex()][0] + 1 << ' ';
 				break;
 			case (3): //textures
-				if (fi->is_side()==0 || h->vertex()->u2() == -1){
-					fs << id[h->vertex()].first + 1 << '/' << id[h->vertex()].first + 1 << ' ';
-				}else{
-					fs << id[h->vertex()].first + 1 << '/' << id[h->vertex()].second + 1 << ' ';
-				}
+					fs << id[h->vertex()][0] + 1 << '/' << id[h->vertex()][fi->is_side()[i]] + 1 << ' ';
 				break;
 			case (4): //no additional info
-				fs << id[h->vertex()].first + 1 << ' ';
+				fs << id[h->vertex()][0] + 1 << ' ';
 				break;
 			}
+			++i;
 		} while (++h != fi->facet_begin());
 		fs << '\n';
 	}
 	fs.close();
+	for (vi = tp.vertices_begin(); vi != tp.vertices_end(); ++vi) {
+		delete id[vi];
+	}
 }

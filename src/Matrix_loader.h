@@ -31,19 +31,20 @@ protected:
 	typedef TexturedPolyhedron::Halfedge_around_facet_circulator HF_circulator;
 	typedef TexturedPolyhedron::Halfedge_around_vertex_circulator HV_circulator;
 
-	typedef std::map<Vertex_handle, std::pair<int, int> > Column;
+	typedef std::map<Vertex_handle, int* > Column;
 	typedef std::map<Facet_handle, int> Row;
 	typedef std::map<Vertex_handle, bool > Tag;
+	typedef std::map<Vertex_handle, int > Tag2;
 	typedef std::list<Halfedge_handle> Halfedges;
 	typedef std::list<Vertex_handle> Vertices;
 protected:
 	Matrix_calculator mc;
-	//std map for each vertex to its corresponding column in the matrix
+	//std map for each vertex to its corresponding column(s) in the matrix
 	Column column;
 	//std map for each facet to its corresponding row in the matrix
 	Row row;
-	//std mapping of vertices with boolean variables that define if a vertex is seam
-	Tag seam;
+	//std mapping of vertices with their number of different textures, 1 for normal vertices, 2 for seam, 3 for begin of branches
+	Tag2 has_textures;
 	//std mapping of vertices with boolean variables that define if a vertex is this type
 	Tag this_type;
 public:
@@ -75,16 +76,21 @@ protected:
 	void load_seam(TexturedPolyhedron& tp, Eigen::SparseMatrix<double>& M);
 	/**counts the number of vertices from this type (pinned or free) which lie on the virtual cut
 	 * @return their number*/
+	void load_seam_between(const Halfedge_handle& prev,const Halfedge_handle& next, const int side, Eigen::SparseMatrix<double>& M);
 	int count_this_seam();
+	int count_this_branch();
 	/**counts the number of vertices from this type with fixed texture coordinates (pinned) or otherwise (free)
 	 * @return their number*/
 	int count_this_type();
+	int count_seam_neighbours(const TexturedPolyhedron::Vertex_handle& v);
 private:
+	bool halfedge_is_between(const Halfedge_handle& this_h, const Halfedge_handle& prev, const Halfedge_handle& next);
+	bool are_sharing_vertex(Halfedge_handle& h1, Halfedge_handle& h2);
 	/**loads the calculations for a given vertex and given facet that lie on the virtual cut
 	 * @param v the given vertex
 	 * @param f the given facet
 	 * @param left is true if the facet belongs to the left side of the virtual cut, otherwise false*/
-	void load_seam_face(Vertex_handle v, Facet_handle f, const int left, Eigen::SparseMatrix<double>& M);
+	void load_seam_face(Vertex_handle v, Facet_handle f, const int side, int sizeColumns, Eigen::SparseMatrix<double>& M);
 };
 
 #endif /* MATRIXLOADER_H_ */
